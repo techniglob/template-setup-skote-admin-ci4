@@ -25,10 +25,10 @@
                         <div class="card-body pt-0">
                             <div class="auth-logo">
                                 
-                                <a href="<?=base_url('/')?>" class="auth-logo-dark">
+                                <a href="<?=base_url()?>" class="auth-logo-dark">
                                     <div class="avatar-md profile-user-wid mb-4">
                                         <span class="avatar-title rounded-circle bg-light">
-                                            <img src="<?=base_url()?>/logo.png" alt="" class="rounded-circle" height="60">
+                                            <img src="<?=base_url()?>logo.png" alt="" class="rounded-circle" height="100">
                                         </span>
                                     </div>
                                 </a>
