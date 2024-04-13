@@ -10,6 +10,14 @@ class AuthController extends BaseController
 {
     public function Auth()
     {
+        if(session()->get('isLoggedIn')){
+            generateFlash([
+                'type'=>'error',
+                'title'=>'Error',
+                'message'=>'First logut then go to login page',
+            ]);
+            return redirect()->back();
+        }
         if($this->request->getVar()){
             $session = session();
             $model = new AuthModel();
@@ -34,14 +42,14 @@ class AuthController extends BaseController
                         'login'=>getCurrentDate(),
                         'agent'=>json_encode($agent)
                     ]); */
-                    $this->generateFlash([
+                    generateFlash([
                         'type'=>'success',
                         'title'=>'Success',
                         'message'=>'Welcome to dashboard',
                     ]);
                     return redirect()->to('back-panel/dashboard');
                 }else{
-                    $this->generateFlash([
+                    generateFlash([
                         'type'=>'error',
                         'title'=>'Error',
                         'message'=>'Password is incorrect.',
@@ -49,7 +57,7 @@ class AuthController extends BaseController
                     return redirect()->to('/back-panel');
                 }
             }else{
-                $this->generateFlash([
+                generateFlash([
                     'type'=>'error',
                     'title'=>'Error',
                     'message'=>'Email does not exist.',
@@ -121,7 +129,7 @@ class AuthController extends BaseController
 
             } 
             if($model->update(getUserData()->id, $data)){
-                $this->generateFlash([
+                generateFlash([
                     'type'=>'success',
                     'title'=>'Success',
                     'message'=>'Profile Updated Successfully',
@@ -185,7 +193,7 @@ class AuthController extends BaseController
                 'password'=>getHash($this->request->getVar('confirm_password'))
             ];
             if($model->update(getUserData()->id, $data)){
-                $this->generateFlash([
+                generateFlash([
                     'type'=>'success',
                     'title'=>'Success',
                     'message'=>'Password Change Successfully',

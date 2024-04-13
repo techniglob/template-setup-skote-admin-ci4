@@ -56,34 +56,6 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
     }
 
-    /**
-    * @author Pritam Khan | pritamkhanofficial@gmail.com
-    * 
-    * 
-    */
-   
-   
-   public function generateFlash($alert = array())
-   {
-       if(array_key_exists('type',$alert)){
-         session()->setFlashdata('type', $alert['type']);
-       }else{
-         session()->setFlashdata('type', "success");
-       }
-   
-       if(array_key_exists('title',$alert)){
-         session()->setFlashdata('title', $alert['title']);
-       }else{
-         session()->setFlashdata('title', "Success");
-       }
-       if(array_key_exists('message',$alert)){
-         session()->setFlashdata('message', $alert['message']);
-       }else{
-         session()->setFlashdata('message', NULL);
-       }
-   }
-
-
    public function fileHandle($crud = NULL, $field = NULL, $file_type = NULL){
       if(!is_null($crud)){
           switch ($file_type) {

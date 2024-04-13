@@ -69,7 +69,8 @@ class Users extends Migration
             'created_by' => [
                 'type'           => 'BIGINT',
                 'constraint'     => 20,
-                'unsigned'       => true
+                'unsigned'       => true,
+                'null'           => true,
             ],
             'updated_at datetime default null on update current_timestamp',
             'updated_by' => [
