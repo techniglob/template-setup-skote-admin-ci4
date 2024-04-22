@@ -11,7 +11,7 @@ class FileController extends BaseController
     {
         $path = WRITEPATH . 'uploads/';
         $fullpath = $path . $filename;
-        if(is_file($fullpath)){ die('dsd');
+        if(is_file($fullpath)){
             $file = new \CodeIgniter\Files\File($fullpath, true);
             $binary = readfile($fullpath);
             return $this->response
@@ -20,6 +20,7 @@ class FileController extends BaseController
                     ->setStatusCode(200)
                     ->setBody($binary);
         }
+
         return null;
         
     }

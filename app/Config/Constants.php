@@ -94,4 +94,4 @@ define('EVENT_PRIORITY_NORMAL', 100);
 define('EVENT_PRIORITY_HIGH', 10);
 
 
-define('UPLOAD_DIR', dirname(dirname(__DIR__)) . '/public/uploads/');
+define('UPLOAD_DIR', WRITEPATH . 'uploads/');
