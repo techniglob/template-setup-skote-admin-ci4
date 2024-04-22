@@ -6,7 +6,7 @@
                             </div> -->
                             <div class="col-sm-12">
                                 <div class="text-center">
-                                    Design &amp; Develop by Sketch Me Global
+                                    Design &amp; Develop by Master Setup
                                 </div>
                             </div>
                         </div>
