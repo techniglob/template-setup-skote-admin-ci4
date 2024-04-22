@@ -55,7 +55,7 @@
                                             Name</label>
                                         <div class="col-md-10">
                                             <input type="text" required name="full_name"
-                                                value="<?=getUserData()->full_name?>" class="form-control"
+                                                value="<?=getBUD()->full_name?>" class="form-control"
                                                 id="full_name">
                                             <?=validation_show_error('full_name')?>
                                         </div>
@@ -64,14 +64,14 @@
                                         <label for="username" class="col-form-label col-md-2">Username</label>
                                         <div class="col-md-10">
                                             <input type="text" required name="username"
-                                                value="<?=getUserData()->username?>" class="form-control" id="username">
+                                                value="<?=getBUD()->username?>" class="form-control" id="username">
                                                 <div class="error username"></div>
                                         </div>
                                     </div>
                                     <div class="row mb-3 required">
                                         <label for="email" class="col-form-label col-md-2">E-mail</label>
                                         <div class="col-md-10">
-                                            <input type="text" required name="email" value="<?=getUserData()->email?>"
+                                            <input type="text" required name="email" value="<?=getBUD()->email?>"
                                                 class="form-control" id="email">
                                                 <div class="error email"></div>
                                         </div>
@@ -79,7 +79,7 @@
                                     <div class="row mb-3 required">
                                         <label for="mobile" class="col-form-label col-md-2">Mobile</label>
                                         <div class="col-md-10">
-                                            <input type="text" required name="mobile" value="<?=getUserData()->mobile?>"
+                                            <input type="text" required name="mobile" value="<?=getBUD()->mobile?>"
                                                 class="form-control" id="mobile">
                                             <?=validation_show_error('mobile')?>
                                         </div>

@@ -121,15 +121,15 @@ class HomeController extends BaseController
         $crud->setTexteditor(['description', 'history_and_heritage','address']);
         // $crud->setFieldUpload(['file', 'is_active','created_by']);
         $crud->callbackColumn('file', array($this, 'showFile'));
-        $crud->fieldType('created_by', 'hidden', getUserData()->id);
-        $crud->fieldType('updated_by', 'hidden', getUserData()->id);
+        $crud->fieldType('created_by', 'hidden', getBUD()->id);
+        $crud->fieldType('updated_by', 'hidden', getBUD()->id);
         /* $crud->callbackAfterInsert(function ($stateParameters) {
             return $this->saveLogData('add','state',$stateParameters->data);
         }); */
         
         $crud->callbackBeforeUpdate(
             function ($cbData) {    
-                $cbData->data['updated_by'] = \getUserData()->id;
+                $cbData->data['updated_by'] = \getBUD()->id;
  
                 return $cbData;
             }

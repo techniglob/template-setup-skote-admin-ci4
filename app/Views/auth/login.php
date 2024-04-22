@@ -16,7 +16,7 @@
                                 <div class="col-7">
                                     <div class="text-primary p-4">
                                         <h5 class="text-primary">Welcome Back !</h5>
-                                        <p>Login to continue to JGMCH Back Panel .</p>
+                                        <p>Login to continue .</p>
                                     </div>
                                 </div>
                                 

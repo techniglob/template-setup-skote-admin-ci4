@@ -26,6 +26,7 @@
                     <!-- start page breadcrumb -->
                     <?=view('component/back/breadcrumb')?>
                     <!-- end page breadcrumb -->
+                    <?php if(1==2){ ?>
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="row">
@@ -94,13 +95,14 @@
 
                         </div>
                     </div>
+                    <?php } ?>
                     <!-- end row -->
                 </div>
                 <!-- container-fluid -->
             </div>
             <!-- End Page-content -->
 
-            
+
 
             <?=view('component/back/footer')?>
         </div>

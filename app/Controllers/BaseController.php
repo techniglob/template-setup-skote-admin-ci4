@@ -118,12 +118,12 @@ abstract class BaseController extends Controller
             } else {
                 $cbData->data[$field] = $file_hidden;
             }
-            $cbData->data['updated_by'] = getUserData()->id;
+            $cbData->data['updated_by'] = getBUD()->id;
             $cbData->data['updated_at'] = \getCurrentDate();
             return $cbData;
         }
       );
-      $crud->fieldType('created_by', 'hidden', getUserData()->id);
+      $crud->fieldType('created_by', 'hidden', getBUD()->id);
       $crud->fieldType('updated_at', 'hidden', null);
       $crud->fieldType('updated_by', 'hidden', null);
       return $crud;

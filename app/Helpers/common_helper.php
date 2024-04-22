@@ -706,19 +706,16 @@ function getDateFormat()
     }
 
 
-    function getUserData(){
+    function getBUD(){
     $request = \Config\Services::request();
     if(isset($request->user)){
         $payload = $request->user;
         if(!is_null($payload)){
-            if(!empty($payload->profile_pic)){
-                if($payload->profile_pic === 'default.png'){
-                    $payload->user_profile_pic = base_url('public/assets/images/users/').$payload->profile_pic;
-                }else{
-                    $payload->user_profile_pic = getFileURL().$payload->profile_pic;
-                }
+            $profile_pic = base_url('get-file/' . $payload->profile_pic);
+            if(is_null($profile_pic)){
+                $payload->user_profile_pic = base_url().$payload->profile_pic;
             }else{
-                $payload->user_profile_pic = base_url('public/assets/images/users/default.png');
+                $payload->user_profile_pic = $profile_pic;
             }
         }
     }
