@@ -5,7 +5,9 @@ namespace App\Controllers\Api\V1;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use \Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use App\Models\AuthModel;
+use stdClass;
 
 class AuthController extends BaseController
 {
@@ -50,7 +52,8 @@ class AuthController extends BaseController
                     'message' => "This Account Has Been Suspended !!",
                 ], 401);
             }
-            $key = getenv('JWT_SECRET_ENCODE');
+            
+            $key = getenv('JWT_SECRET');
             $iat = time(); // current timestamp value
             $exp = $iat + 2592000; // 30days days
             // echo gmdate("Y-m-d\TH:i:s\Z", $exp);
@@ -67,6 +70,7 @@ class AuthController extends BaseController
             $response['token'] = $token;
             $response['token_expiry'] = $exp;
             $response['user_data'] = $data;
+    
             return $this->respond([
                 'data' => $response,
                 'message' => "Loggedin Successfully",

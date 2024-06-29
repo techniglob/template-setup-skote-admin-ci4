@@ -28,7 +28,7 @@ class ApiAuthFilter extends BaseController implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         
-        $key = getenv('JWT_SECRET_DECODE');
+        $key = getenv('JWT_SECRET');
         $header = $request->header("Authorization");
         $token = null;
         // extract the token from the header
