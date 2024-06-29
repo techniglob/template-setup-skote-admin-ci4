@@ -141,3 +141,7 @@
 #--------------------------------------------------------------------
 
 # curlrequest.shareOptions = false
+
+#JWT_SECRET_ENCODE = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTg4MjE5Njh9.GDSnYonjEWAWoxYSichQwyYiC_cZBOTmzvhm0Uoi0NI;
+
+#JWT_SECRET_DECODE = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTg4MjIwNTF9.93ELk0lry0FC5K1kEDH1h-punBTmuzI1P80nYsMrs0o;

@@ -40,11 +40,20 @@ $routes->group('back-panel', static function ($routes) {
        
     });
 });
-/* $routes->group('back-panel', static function ($routes) {
 
-    
-    $routes->group('/', ['namespace' => 'App\Controllers'], static function ($routes) {
-        $routes->get('dashboard', 'DashboardController::index');
+
+
+$routes->group('api', static function ($routes) {
+
+    $routes->group('v1', ['namespace' => 'App\Controllers\Api\V1'], static function ($routes) {
+        $routes->match(['get','post'], '/', 'AuthController::auth'); 
+        
+        $routes->group('', ['filter'=>'apiAuthFilter'], static function ($routes) {
+
+            $routes->match(['get','post'], 'get-fun', 'AuthController::getFun'); 
+            
+        });
+        
        
     });
-}); */
+});
