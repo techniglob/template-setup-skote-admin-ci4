@@ -39,7 +39,7 @@ class AuthController extends BaseController
                         'user_id'=>$data->user_id,
                         'institute_id'=>$data->institute_id,
                         'ip'=>$agent['ip_address'],
-                        'login'=>getCurrentDate(),
+                        'login'=>getDbDate(),
                         'agent'=>json_encode($agent)
                     ]); */
                     generateFlash([
@@ -214,7 +214,7 @@ class AuthController extends BaseController
     {
         /* $userActivityModel = new UserActivity();
         $userActivityModel->update(['id'=>$this->getUserId() ?? NULL],[
-            'logout'=>getCurrentDate()
+            'logout'=>getDbDate()
         ]); */
         session()->remove('isLoggedIn');
         session()->remove('user');

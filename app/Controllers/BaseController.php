@@ -122,7 +122,7 @@ abstract class BaseController extends Controller
             $cbData->data[$field] = $file_hidden;
           }
           $cbData->data['updated_by'] = getBUD()->id;
-          $cbData->data['updated_at'] = \getCurrentDate();
+          $cbData->data['updated_at'] = \getDbDate();
           return $cbData;
         }
       );

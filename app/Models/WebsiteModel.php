@@ -51,7 +51,7 @@ class WebsiteModel extends Model
     }
     public function softDelete($table, $id){
         return  $this->db->table($table)->update([
-            'deleted_at'=> getCurrentDate(),
+            'deleted_at'=> getDbDate(),
             'deleted_by'=> getBUD()->id
         ], ['id'=>$id]);
     }
