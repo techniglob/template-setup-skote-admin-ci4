@@ -58,7 +58,6 @@ writable/session/*
 !writable/session/index.html
 
 writable/uploads/*
-public/uploads/*
 !writable/uploads/index.html
 
 writable/debugbar/*
@@ -125,5 +124,3 @@ nb-configuration.xml
 
 /results/
 /phpunit*.xml
-/.phpunit.*.cache
-
