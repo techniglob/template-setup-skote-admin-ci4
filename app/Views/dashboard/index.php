@@ -3,7 +3,7 @@
 
 <head>
 
-    <?=view('component/back/head')?>
+    <?=view('components/back/head')?>
 
 </head>
 
@@ -12,8 +12,8 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        <?=view('component/back/header')?>
-        <?=view('component/back/sidebar')?>
+        <?=view('components/back/header')?>
+        <?=view('components/back/sidebar')?>
 
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -24,7 +24,7 @@
                 <div class="container-fluid">
 
                     <!-- start page breadcrumb -->
-                    <?=view('component/back/breadcrumb')?>
+                    <?=view('components/back/breadcrumb')?>
                     <!-- end page breadcrumb -->
                     <?php if(1==2){ ?>
                     <div class="row">
@@ -104,7 +104,7 @@
 
 
 
-            <?=view('component/back/footer')?>
+            <?=view('components/back/footer')?>
         </div>
         <!-- end main content-->
 
@@ -116,7 +116,7 @@
     <div class="rightbar-overlay"></div>
 
 
-    <?=view('component/back/script')?>
+    <?=view('components/back/script')?>
 
 </body>
 

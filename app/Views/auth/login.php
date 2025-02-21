@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <?=view('component/back/head')?>
+    <?=view('components/back/head')?>
 </head>
 
 <body>
@@ -92,7 +92,7 @@
     </div>
     <!-- end account-pages -->
 
-    <?=view('component/back/script')?>
+    <?=view('components/back/script')?>
 </body>
 
 

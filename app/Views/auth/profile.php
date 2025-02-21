@@ -3,7 +3,7 @@
 
 <head>
 
-    <?=view('component/back/head')?>
+    <?=view('components/back/head')?>
 
 </head>
 
@@ -12,8 +12,8 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        <?=view('component/back/header')?>
-        <?=view('component/back/sidebar')?>
+        <?=view('components/back/header')?>
+        <?=view('components/back/sidebar')?>
 
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -110,7 +110,7 @@
             </div>
             <!-- End Page-content -->
 
-            <?=view('component/back/footer')?>
+            <?=view('components/back/footer')?>
 
             
         </div>
@@ -124,7 +124,7 @@
     <div class="rightbar-overlay"></div>
 
 
-    <?=view('component/back/script')?>
+    <?=view('components/back/script')?>
 
 
     <script>
