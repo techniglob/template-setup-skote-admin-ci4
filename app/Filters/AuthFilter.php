@@ -25,13 +25,16 @@ class AuthFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (!session()->get('isLoggedIn'))
+        if (!isset(getUserSession()['isLoggedIn']))
         {
+            setFlash([
+                'status'=>'error',
+                'title'=>'Error',
+                'message'=>'First login then access the admin panel',
+            ]);
             return redirect()
                 ->to('/portal');
         }
-
-        $request->user = session()->get('user');
     }
 
     /**

@@ -3,12 +3,12 @@
 use CodeIgniter\HTTP\RequestInterface;
 use \Config\Database;
 
-function generateFlash($alert = array())
+function setFlash($alert = array())
 {
-    if (array_key_exists('type', $alert)) {
-        session()->setFlashdata('type', $alert['type']);
+    if (array_key_exists('status', $alert)) {
+        session()->setFlashdata('status', $alert['status']);
     } else {
-        session()->setFlashdata('type', "success");
+        session()->setFlashdata('status', "success");
     }
 
     if (array_key_exists('title', $alert)) {
@@ -29,8 +29,24 @@ function getHash($data)
 }
 
 
-
-
+// For Web View
+// Function to set session data
+if (!function_exists('setUserSession')) {
+    function setUserSession($user)
+    {
+        $session = \Config\Services::session();
+        $session->set('user', $user);
+    }
+}
+// Function to get session data
+if (!function_exists('getUserSession')) {
+    function getUserSession()
+    {
+        $session = \Config\Services::session();
+        $payload = $session->get('user');
+        return $payload;
+    }
+}
 
 function UploadFile(\CodeIgniter\HTTP\Files\UploadedFile $imageFile, $folder = NULL, $editFileName = NULL)
 {
@@ -565,11 +581,13 @@ function getDateFormat()
 }
 
 
-function getBUD()
+function getBackUser()
 {
     $request = \Config\Services::request();
-    if (isset($request->user)) {
-        $payload = $request->user;
+    $payload = null;
+    if (!empty(getUserSession())) {
+        $payload = getUserSession();
+        $payload = $payload['user'];
         if (!is_null($payload)) {
             $path = WRITEPATH . 'uploads/';
             $fullpath = $path . $payload->profile_pic;

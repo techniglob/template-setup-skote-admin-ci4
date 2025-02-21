@@ -11,8 +11,8 @@ class AuthController extends BaseController
     public function Auth()
     {
         if(session()->get('isLoggedIn')){
-            generateFlash([
-                'type'=>'error',
+            setFlash([
+                'status'=>'error',
                 'title'=>'Error',
                 'message'=>'First logut then go to login page',
             ]);
@@ -24,6 +24,7 @@ class AuthController extends BaseController
             $username = $this->request->getVar('username');
             $password = $this->request->getVar('password');
             $data = $model->Auth($username);
+            
             if(!is_null($data)){
                 $pass = $data->password;
                 $authenticatePassword = password_verify($password, $pass);
@@ -32,7 +33,8 @@ class AuthController extends BaseController
                         'user' => $data,
                         'isLoggedIn' => TRUE
                     ];
-                    $session->set($session_data);
+                    setUserSession($session_data);
+                    // getPrint($session_data);
                     //$userActivityModel = new UserActivity();
                     //$agent = getDeviceInfo();
                     /* $userActivityModel->insert([
@@ -42,25 +44,25 @@ class AuthController extends BaseController
                         'login'=>getDbDate(),
                         'agent'=>json_encode($agent)
                     ]); */
-                    generateFlash([
-                        'type'=>'success',
+                    setFlash([
+                        'status'=>'success',
                         'title'=>'Success',
                         'message'=>'Welcome to dashboard',
                     ]);
                     return redirect()->to('portal/dashboard');
                 }else{
-                    generateFlash([
-                        'type'=>'error',
+                    setFlash([
+                        'status'=>'error',
                         'title'=>'Error',
                         'message'=>'Password is incorrect.',
                     ]);
                     return redirect()->to('/portal');
                 }
             }else{
-                generateFlash([
-                    'type'=>'error',
+                setFlash([
+                    'status'=>'error',
                     'title'=>'Error',
-                    'message'=>'Email does not exist.',
+                    'message'=>'Email or Username does not exist.',
                 ]);
                 return redirect()->to('/portal');
             }
@@ -79,11 +81,11 @@ class AuthController extends BaseController
                 ],
                 'username' => [
                     'label' => 'Username',
-                    'rules' => 'required|max_length[20]|is_unique[users.username,id,'. getBUD()->id .']'
+                    'rules' => 'required|max_length[20]|is_unique[users.username,id,'. getBackUser()->id .']'
                 ],
                 'email' => [
                     'label' => 'E-mail',
-                    'rules' => 'required|valid_email|is_unique[users.email,id,'. getBUD()->id .']'
+                    'rules' => 'required|valid_email|is_unique[users.email,id,'. getBackUser()->id .']'
                 ],
                 'mobile' => [
                     'label' => 'Mobile',
@@ -105,7 +107,7 @@ class AuthController extends BaseController
                 'username'=>$this->request->getVar('username'),
                 'email'=>$this->request->getVar('email'),
                 'mobile'=>$this->request->getVar('mobile'),
-                'updated_by'=>getBUD()->id
+                'updated_by'=>getBackUser()->id
             ];
             // print_r($this->request->getVar()); die;
             $profile_pic = $this->request->getFile('profile_pic');
@@ -124,17 +126,17 @@ class AuthController extends BaseController
                         'message'=>$this->validator->getErrors(),
                     ]);
                 }
-                $profile_pic = UploadFile($profile_pic, NULL, getBUD()->profile_pic);
+                $profile_pic = UploadFile($profile_pic, NULL, getBackUser()->profile_pic);
                 $data['profile_pic'] = $profile_pic ?? 'default.png';
 
             } 
-            if($model->update(getBUD()->id, $data)){
-                generateFlash([
-                    'type'=>'success',
+            if($model->update(getBackUser()->id, $data)){
+                setFlash([
+                    'status'=>'success',
                     'title'=>'Success',
                     'message'=>'Profile Updated Successfully',
                 ]);
-                $data = $model->find(getBUD()->id);
+                $data = $model->find(getBackUser()->id);
                 $session_data = [
                     'user' => $data,
                     'isLoggedIn' => TRUE
@@ -161,7 +163,7 @@ class AuthController extends BaseController
                         'required',
                         static function ($value, $data, &$error, $password) {
                             $model = new AuthModel();
-                            $authData = $model->find(getBUD()->id);
+                            $authData = $model->find(getBackUser()->id);
                             $authenticatePassword = password_verify($value, $authData->password);
                             if (!$authenticatePassword) {
                                 $error = 'Current password does not match.';
@@ -192,9 +194,9 @@ class AuthController extends BaseController
             $data = [
                 'password'=>getHash($this->request->getVar('confirm_password'))
             ];
-            if($model->update(getBUD()->id, $data)){
-                generateFlash([
-                    'type'=>'success',
+            if($model->update(getBackUser()->id, $data)){
+                setFlash([
+                    'status'=>'success',
                     'title'=>'Success',
                     'message'=>'Password Change Successfully',
                 ]);

@@ -42,7 +42,7 @@ class WebsiteModel extends Model
 
     public function addSlider($data){
 
-        $data['created_by'] = getBUD()->id;
+        $data['created_by'] = getBackUser()->id;
         return $this->db->table('sliders')->insert($data);
     }
     public function getCountAboutHospital(){
@@ -52,7 +52,7 @@ class WebsiteModel extends Model
     public function softDelete($table, $id){
         return  $this->db->table($table)->update([
             'deleted_at'=> getDbDate(),
-            'deleted_by'=> getBUD()->id
+            'deleted_by'=> getBackUser()->id
         ], ['id'=>$id]);
     }
 }
