@@ -9,13 +9,13 @@
         <ul class="metismenu list-unstyled" id="side-menu">
             <li class="menu-title" key="t-menu">Menu</li>
             <li>
-                <a href="<?=base_url('back-panel/dashboard')?>" class="waves-effect">
+                <a href="<?=base_url('portal/dashboard')?>" class="waves-effect">
                 <i class="bx bx-home-circle"></i>
                     <span >Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="<?=base_url('back-panel/logout')?>" class="waves-effect">
+                <a href="<?=base_url('portal/logout')?>" class="waves-effect">
                 <i class="bx bx-power-off"></i>
                     <span >Logout</span>
                 </a>

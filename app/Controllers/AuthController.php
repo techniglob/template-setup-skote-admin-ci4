@@ -47,14 +47,14 @@ class AuthController extends BaseController
                         'title'=>'Success',
                         'message'=>'Welcome to dashboard',
                     ]);
-                    return redirect()->to('back-panel/dashboard');
+                    return redirect()->to('portal/dashboard');
                 }else{
                     generateFlash([
                         'type'=>'error',
                         'title'=>'Error',
                         'message'=>'Password is incorrect.',
                     ]);
-                    return redirect()->to('/back-panel');
+                    return redirect()->to('/portal');
                 }
             }else{
                 generateFlash([
@@ -62,7 +62,7 @@ class AuthController extends BaseController
                     'title'=>'Error',
                     'message'=>'Email does not exist.',
                 ]);
-                return redirect()->to('/back-panel');
+                return redirect()->to('/portal');
             }
         }
         return view('auth/login');
@@ -219,6 +219,6 @@ class AuthController extends BaseController
         session()->remove('isLoggedIn');
         session()->remove('user');
         return redirect()
-                ->to('/back-panel');
+                ->to('/portal');
     }
 }

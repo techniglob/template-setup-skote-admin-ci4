@@ -119,7 +119,7 @@
             $("#submit").html("Change")
             if (response?.success) {
                 notification();
-                window.location.href = "<?=base_url('back-panel/slider')?>";
+                window.location.href = "<?=base_url('portal/slider')?>";
             }
 
             $(".password").html(response.message?.password ?? '');
