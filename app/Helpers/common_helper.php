@@ -610,3 +610,18 @@ function dateDiff($date)
     $dDiff = $dStart->diff($dEnd);
     return  $dDiff->format('%r%a')  + 1;
 }
+
+/**
+ * Back Panel Access Set View 
+ *
+ * @param string $url
+ * @return string
+ */
+function portalView(string $name, array $data = [], array $options = [])
+{
+    return view(
+        'portal/' . $name,
+        $data,
+        $options
+    );
+}

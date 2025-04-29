@@ -10,6 +10,6 @@ class DashboardController extends BaseController
     public function index()
     {
         // echo base_url(); die;
-        return view('dashboard/index');
+        return portalView('dashboard/index');
     }
 }
