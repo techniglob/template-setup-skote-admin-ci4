@@ -3,7 +3,7 @@
 
 <head>
 
-    <?=view('components/back/head')?>
+    <?=view('components/portal/head')?>
 
     <?php 
 foreach($css_files as $file): ?>
@@ -17,8 +17,8 @@ foreach($css_files as $file): ?>
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        <?=view('components/back/header')?>
-        <?=view('components/back/sidebar')?>
+        <?=view('components/portal/header')?>
+        <?=view('components/portal/sidebar')?>
 
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -29,7 +29,7 @@ foreach($css_files as $file): ?>
                 <div class="container-fluid">
 
                     <!-- start page breadcrumb -->
-                    <?=view('components/back/breadcrumb')?>
+                    <?=view('components/portal/breadcrumb')?>
                     <!-- end page breadcrumb -->
                     <div class="row">
 
@@ -45,7 +45,7 @@ foreach($css_files as $file): ?>
             </div>
             <!-- End Page-content -->
 
-            <?=view('components/back/footer')?>
+            <?=view('components/portal/footer')?>
 
 
         </div>
@@ -59,7 +59,7 @@ foreach($css_files as $file): ?>
     <div class="rightbar-overlay"></div>
 
 
-    <?=view('components/back/script')?>
+    <?=view('components/portal/script')?>
 
     <?php foreach($js_files as $file): ?>
     <script src="<?php echo $file; ?>"></script>

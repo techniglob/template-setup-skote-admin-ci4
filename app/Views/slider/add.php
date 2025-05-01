@@ -3,7 +3,7 @@
 
 <head>
 
-    <?=view('components/back/head')?>
+    <?=view('components/portal/head')?>
 </head>
 
 <body data-sidebar="dark" data-layout-mode="light">
@@ -11,8 +11,8 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        <?=view('components/back/header')?>
-        <?=view('components/back/sidebar')?>
+        <?=view('components/portal/header')?>
+        <?=view('components/portal/sidebar')?>
 
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -76,7 +76,7 @@
             </div>
             <!-- End Page-content -->
 
-            <?=view('components/back/footer')?>
+            <?=view('components/portal/footer')?>
 
 
         </div>
@@ -90,7 +90,7 @@
     <div class="rightbar-overlay"></div>
 
 
-    <?=view('components/back/script')?>
+    <?=view('components/portal  /script')?>
 
     <script>
     $("#addSlider").validate({
