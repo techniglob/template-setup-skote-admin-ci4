@@ -10,14 +10,15 @@ class AuthController extends BaseController
 {
     public function Auth()
     {
-        if(session()->get('isLoggedIn')){
-            setFlash([
-                'status'=>'error',
-                'title'=>'Error',
-                'message'=>'First logut then go to login page',
-            ]);
-            return redirect()->back();
-        }
+        // if(session()->get('isLoggedIn')){
+        //     // Print(session());
+        //     setFlash([
+        //         'status'=>'error',
+        //         'title'=>'Error',
+        //         'message'=>'First logut then go to login page',
+        //     ]);
+        //     return redirect()->back();
+        // }
         if($this->request->getVar()){
             $session = session();
             $model = new AuthModel();
@@ -141,7 +142,7 @@ class AuthController extends BaseController
                     'user' => $data,
                     'isLoggedIn' => TRUE
                 ];
-                session()->set($session_data);
+                setUserSession($session_data);
                 return $this->response->setJSON([
                     'success'=>true
                 ]);
@@ -149,7 +150,7 @@ class AuthController extends BaseController
 
 
         }
-        return view('auth/profile');
+        return view('portal/profile');
     }
 
     public function changePassword()
@@ -208,7 +209,7 @@ class AuthController extends BaseController
 
 
         }
-        return view('auth/change-password');
+        return view('portal/change-password');
     }
 
 

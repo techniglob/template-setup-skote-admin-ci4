@@ -25,6 +25,7 @@ class AuthFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
+        // getPrint(getUserSession()['isLoggedIn']);
         if (!isset(getUserSession()['isLoggedIn']))
         {
             setFlash([
