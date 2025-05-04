@@ -59,11 +59,10 @@ writable/session/*
 
 writable/uploads/*
 !writable/uploads/index.html
-app/Commands/Temp/*
-!app/Commands/Temp/.gitkeep
 
 writable/debugbar/*
 !writable/debugbar/.gitkeep
+writable/db_init.lock
 
 php_errors.log
 
