@@ -35,6 +35,8 @@ class InitializeDB extends BaseCommand
         // Get the migration runner
         $this->runner = service('migrations');
         $this->runner->setGroup('default');
+        $this->runner->ensureTable();
+        // getPrint($this->runner);
     }
 
     public function run(array $params)
@@ -110,15 +112,11 @@ class InitializeDB extends BaseCommand
             CLI::write('Transaction committed successfully.', 'green');
             CLI::write('Database initialization completed successfully!', 'green');
         } catch (\Throwable $e) {
-            // Rollback seeders
-           /*  if ($this->db->inTransaction()) {
-                CLI::write('Attempting to roll back seeder transaction...', 'yellow');
-                $this->db->transRollback();
-                CLI::write('Seeder transaction rolled back.', 'yellow');
-            } else {
-                CLI::write('No active seeder transaction to roll back.', 'red');
-            } */
-
+            $db = \Config\Database::connect();
+            // Check if the migrations table exists
+            if ($db->tableExists('migrations')) {
+                $db->query("DROP TABLE `migrations`");
+            }
             // Rollback migrations
             if (!empty($appliedMigrations)) {
                 CLI::write('Rolling back migrations...', 'yellow');
@@ -159,16 +157,17 @@ class InitializeDB extends BaseCommand
         require_once $migration->path;
 
         // Construct the full class name
-        $className = $migration->class;
-        
+        $className = $migration->namespace . '\\Database\\Migrations\\' . $migration->name;
+        // $className = $migration;
+        // getPrint($className);
         // Check if the class exists
         if (!class_exists($className, false)) {
             throw new \RuntimeException("Migration class not found: {$className}");
         }
 
         // Instantiate the migration class
-        $migrationInstance = new $className($this->db);
-        getPrint($migrationInstance);
+        $migrationInstance = new $className($this->forge);
+        // getPrint($migrationInstclsance);
         // Verify it's a valid migration
         if (!($migrationInstance instanceof \CodeIgniter\Database\Migration)) {
             throw new \RuntimeException("Class {$className} is not a valid migration.");
