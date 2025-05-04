@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-
+use App\Libraries\AvatarGenerator;
 class FileController extends BaseController
 {
     public function getFile($filename)
@@ -23,5 +23,11 @@ class FileController extends BaseController
 
         return null;
         
+    }
+
+    public function show($name = 'Pritam Khan')
+    {
+        $avatar = new AvatarGenerator();
+        return $avatar->generateFromName(urldecode($name));
     }
 }

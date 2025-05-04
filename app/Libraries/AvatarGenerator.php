@@ -4,21 +4,31 @@ namespace App\Libraries;
 
 class AvatarGenerator
 {
-    protected $width = 200;
-    protected $height = 200;
-    protected $backgroundColor = [85, 46, 145]; // Purple
+    protected $width = 100;
+    protected $height = 100;
+    protected $backgroundColor = [52, 143, 235];
     protected $textColor = [255, 255, 255]; // White
-    protected $fontSize = 50;
+    protected $fontSize = 40;
     protected $fontPath;
 
     public function __construct()
     {
-        // Default font path
-        $this->fontPath = WRITEPATH . 'fonts/OpenSans-Bold.ttf';
-
+        $this->fontPath = FCPATH . '/common/fonts/OpenSans-Bold.ttf';
         if (!file_exists($this->fontPath)) {
             throw new \Exception("Font file not found at: " . $this->fontPath);
         }
+    }
+
+    public function getInitials(string $fullName): string
+    {
+        $words = explode(' ', strtoupper(trim($fullName)));
+        $initials = '';
+        foreach ($words as $word) {
+            if (!empty($word)) {
+                $initials .= $word[0];
+            }
+        }
+        return substr($initials, 0, 2); // Max 2 chars
     }
 
     public function generate(string $initials = 'PK')
@@ -26,25 +36,32 @@ class AvatarGenerator
         // Create image canvas
         $image = imagecreatetruecolor($this->width, $this->height);
 
-        // Colors
+        // Allocate colors
         $bgColor = imagecolorallocate($image, ...$this->backgroundColor);
         $textColor = imagecolorallocate($image, ...$this->textColor);
-
-        // Fill background
         imagefilledrectangle($image, 0, 0, $this->width, $this->height, $bgColor);
 
-        // Text positioning
+        // Get bounding box
         $bbox = imagettfbbox($this->fontSize, 0, $this->fontPath, $initials);
-        $x = ($this->width - ($bbox[2] - $bbox[0])) / 2;
-        $y = ($this->height - ($bbox[7] - $bbox[1])) / 2;
-        $y -= $bbox[7];
 
-        // Write text
+        $textWidth  = abs($bbox[4] - $bbox[0]);
+        $textHeight = abs($bbox[5] - $bbox[1]);
+
+        $x = ($this->width - $textWidth) / 2;
+        $y = ($this->height + $textHeight) / 2;
+
+        // Draw text
         imagettftext($image, $this->fontSize, 0, $x, $y, $textColor, $this->fontPath, $initials);
 
-        // Output image
+        // Output
         header('Content-Type: image/png');
         imagepng($image);
         imagedestroy($image);
+    }
+
+    public function generateFromName(string $fullName = 'Pritam Khan')
+    {
+        $initials = $this->getInitials($fullName);
+        $this->generate($initials);
     }
 }

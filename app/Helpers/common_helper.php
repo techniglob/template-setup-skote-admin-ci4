@@ -596,23 +596,12 @@ function getBackUser()
                 $profile_pic = base_url('get-file/' . $payload->profile_pic);
                 $payload->user_profile_pic = $profile_pic;
             } else {
-                $payload->user_profile_pic = avatar_url("Pritam Khan");
+                $payload->user_profile_pic = base_url('avatar/' . $payload->full_name);
             }
         }
     }
     return $payload;
 }
-
-
-if (!function_exists('avatar_url')) {
-    function avatar_url(string $name, string $background = '33f9ff', string $color = '0000'): string
-    {
-        $encodedName = urlencode($name);
-        return $encodedName;
-        return "https://ui-avatars.com/api/?name={$encodedName}&background={$background}&color={$color}";
-    }
-}
-
 
 function dateDiff($date)
 {
