@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Temp;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -111,6 +111,12 @@ class InitializeDB extends BaseCommand
             $this->db->transCommit();
             CLI::write('Transaction committed successfully.', 'green');
             CLI::write('Database initialization completed successfully!', 'green');
+            // Delete the command file
+            $commandFile = __FILE__;
+            if (file_exists($commandFile)) {
+                unlink($commandFile);
+                CLI::write("Command file '{$this->name}' deleted successfully.", 'light_gray');
+            }
         } catch (\Throwable $e) {
             $db = \Config\Database::connect();
             // Check if the migrations table exists
