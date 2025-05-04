@@ -58,6 +58,7 @@ writable/session/*
 !writable/session/index.html
 
 writable/uploads/*
+app/Commands/InitializeDB.php
 !writable/uploads/index.html
 
 writable/debugbar/*
