@@ -58,7 +58,6 @@ writable/session/*
 !writable/session/index.html
 
 writable/uploads/*
-app/Commands/Temp/*
 !writable/uploads/index.html
 
 writable/debugbar/*
