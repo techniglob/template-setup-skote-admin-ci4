@@ -23,6 +23,8 @@ class UsersTableRoleIdColumnAdd extends Migration
 
     public function down()
     {
+        // Drop the foreign key first to avoid MySQL errors
+        $this->db->query("ALTER TABLE `users` DROP FOREIGN KEY `fk_users_role_id`");
         $this->forge->dropColumn('users', 'role_id');
     }
 }

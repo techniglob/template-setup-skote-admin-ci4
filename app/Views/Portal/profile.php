@@ -161,6 +161,7 @@
     });
     $("#updateProfile").ajaxForm({
         contentType: 'application/json',
+        
         beforeSubmit: function() {
             var valid = $('#updateProfile').valid();
             if (valid) {
@@ -170,7 +171,7 @@
         },
         success: function(response) {
             if(response?.success){
-                notification();
+                notifyToast();
                 $("#submit").html("Update")
                 window.location.reload(true);
             }
