@@ -58,8 +58,9 @@ writable/session/*
 !writable/session/index.html
 
 writable/uploads/*
-app/Commands/Temp/*
 !writable/uploads/index.html
+app/Commands/Temp/*
+!app/Commands/Temp/.gitkeep
 
 writable/debugbar/*
 !writable/debugbar/.gitkeep

@@ -1,5 +1,5 @@
 <?php
-
+ 
 namespace App\Commands\Temp;
 
 use CodeIgniter\CLI\BaseCommand;
