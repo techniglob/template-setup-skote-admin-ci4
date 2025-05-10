@@ -95,3 +95,5 @@ define('EVENT_PRIORITY_HIGH', 10);
 
 
 define('UPLOAD_DIR', WRITEPATH . DIRECTORY_SEPARATOR . 'uploads/');
+
+define('UI_AVATARS', "https://ui-avatars.com/api/");
