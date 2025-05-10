@@ -10,6 +10,7 @@ class UsersSeeder extends Seeder
     {
         $data = [
             'username' => 'admin',
+            'role_id' => 1,
             'email'    => 'admin@gmail.com',
             'mobile'    => '1234567890',
             'full_name'    => 'Admin',
