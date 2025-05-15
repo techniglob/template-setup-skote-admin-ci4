@@ -10,15 +10,14 @@ class AuthController extends BaseController
 {
     public function Auth()
     {
-        // if(session()->get('isLoggedIn')){
-        //     // Print(session());
-        //     setFlash([
-        //         'status'=>'error',
-        //         'title'=>'Error',
-        //         'message'=>'First logut then go to login page',
-        //     ]);
-        //     return redirect()->back();
-        // }
+        if(isset(getUserSession()['isLoggedIn'])){
+            setFlash([
+                'status'=>'error',
+                'title'=>'Error',
+                'message'=>'First logut then go to login page',
+            ]);
+            return redirect()->back();
+        }
         if($this->request->getVar()){
             $session = session();
             $model = new AuthModel();

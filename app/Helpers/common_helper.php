@@ -630,3 +630,16 @@ function portalView(string $name, array $data = [], array $options = [])
         $options
     );
 }
+/**
+ * Back Panel Access Set Base Url 
+ *
+ * @param string $route
+ * @return string $scheme
+ */
+function portalUrl(?string $route = null, ?string $scheme = null)
+{
+    return base_url(
+        'portal/' . $route,
+        $scheme
+    );
+}

@@ -18,53 +18,43 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        <?php if (session()->has('status')) { ?>
-            toastr["<?= strtolower(session()->getFlashdata('status') ?? 'error') ?>"]("<?= session()->getFlashdata('message') ?? 'Your work has been saved' ?>",
-                "<?= session()->getFlashdata('title') ?? 'No title' ?>")
+    // Pass PHP session data to JavaScript variables
+    const toastData = {
+        status: "<?= strtolower(session()->getFlashdata('status') ?? '') ?>",
+        message: "<?= session()->getFlashdata('message') ?? '' ?>",
+        title: "<?= session()->getFlashdata('title') ?? '' ?>"
+    };
 
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": 300,
-                "hideDuration": 1000,
-                "timeOut": 5000,
-                "extendedTimeOut": 1000,
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-        <?php } ?>
+    function showToastr(status = 'error', message = 'Your work has been saved', title = 'No title') {
+        toastr[status](message, title);
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    }
+
+    $(document).ready(function() {
+        if (toastData.status) {
+            showToastr(toastData.status, toastData.message, toastData.title);
+        }
     });
 
     function notifyToast() {
-        <?php if (session()->has('status')) { ?>
-            toastr["<?= strtolower(session()->getFlashdata('status') ?? 'error') ?>"]("<?= session()->getFlashdata('message') ?? 'Your work has been saved' ?>",
-                "<?= session()->getFlashdata('title') ?? 'No title' ?>")
-
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": 300,
-                "hideDuration": 1000,
-                "timeOut": 5000,
-                "extendedTimeOut": 1000,
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-        <?php } ?>
+        if (toastData.status) {
+            showToastr(toastData.status, toastData.message, toastData.title);
+        }
     }
 </script>
