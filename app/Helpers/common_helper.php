@@ -10,12 +10,6 @@ function setFlash($alert = array())
     } else {
         session()->setFlashdata('status', "success");
     }
-
-    if (array_key_exists('title', $alert)) {
-        session()->setFlashdata('title', $alert['title']);
-    } else {
-        session()->setFlashdata('title', "Success");
-    }
     if (array_key_exists('message', $alert)) {
         session()->setFlashdata('message', $alert['message']);
     } else {
@@ -628,5 +622,18 @@ function portalView(string $name, array $data = [], array $options = [])
         'portal/' . $name,
         $data,
         $options
+    );
+}
+/**
+ * Back Panel Access Set Base Url 
+ *
+ * @param string $route
+ * @return string $scheme
+ */
+function portalUrl(?string $route = null, ?string $scheme = null)
+{
+    return base_url(
+        'portal/' . $route,
+        $scheme
     );
 }
