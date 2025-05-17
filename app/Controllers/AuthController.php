@@ -13,7 +13,6 @@ class AuthController extends BaseController
         if(isset(getUserSession()['isLoggedIn'])){
             setFlash([
                 'status'=>'error',
-                'title'=>'Error',
                 'message'=>'First logut then go to login page',
             ]);
             return redirect()->back();
@@ -46,14 +45,12 @@ class AuthController extends BaseController
                     ]); */
                     setFlash([
                         'status'=>'success',
-                        'title'=>'Success',
                         'message'=>'Welcome to dashboard',
                     ]);
                     return redirect()->to('portal/dashboard');
                 }else{
                     setFlash([
                         'status'=>'error',
-                        'title'=>'Error',
                         'message'=>'Password is incorrect.',
                     ]);
                     return redirect()->to('/portal');
@@ -61,7 +58,6 @@ class AuthController extends BaseController
             }else{
                 setFlash([
                     'status'=>'error',
-                    'title'=>'Error',
                     'message'=>'Email or Username does not exist.',
                 ]);
                 return redirect()->to('/portal');
@@ -133,7 +129,6 @@ class AuthController extends BaseController
             if($model->update(getBackUser()->id, $data)){
                 setFlash([
                     'status'=>'success',
-                    'title'=>'Success',
                     'message'=>'Profile Updated Successfully',
                 ]);
                 $data = $model->find(getBackUser()->id);
@@ -197,7 +192,6 @@ class AuthController extends BaseController
             if($model->update(getBackUser()->id, $data)){
                 setFlash([
                     'status'=>'success',
-                    'title'=>'Success',
                     'message'=>'Password Change Successfully',
                 ]);
                 return $this->response->setJSON([

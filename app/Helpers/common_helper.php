@@ -10,12 +10,6 @@ function setFlash($alert = array())
     } else {
         session()->setFlashdata('status', "success");
     }
-
-    if (array_key_exists('title', $alert)) {
-        session()->setFlashdata('title', $alert['title']);
-    } else {
-        session()->setFlashdata('title', "Success");
-    }
     if (array_key_exists('message', $alert)) {
         session()->setFlashdata('message', $alert['message']);
     } else {

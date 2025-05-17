@@ -30,7 +30,6 @@ class AuthFilter implements FilterInterface
         {
             setFlash([
                 'status'=>'error',
-                'title'=>'Error',
                 'message'=>'First login then access the admin panel',
             ]);
             return redirect()

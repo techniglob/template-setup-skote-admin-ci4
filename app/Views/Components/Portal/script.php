@@ -7,7 +7,7 @@
 
 <!-- apexcharts -->
 <script src="<?= base_url('') ?>back/js/apexcharts.min.js"></script>
-<script src="<?= base_url('') ?>back/js/toastr.min.js"></script>
+<script src="<?= base_url('') ?>back/js/sweetalert2.js"></script>
 
 <!-- App js -->
 <script src="<?= base_url('') ?>back/js/app.js"></script>
@@ -18,42 +18,48 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
 <script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        width: 'auto',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    function showToast(icon, title) {
+        Toast.fire({
+            icon: icon,
+            title: title
+        });
+    }
+
     // Pass PHP session data to JavaScript variables
     const toastData = {
         status: "<?= strtolower(session()->getFlashdata('status') ?? '') ?>",
-        message: "<?= session()->getFlashdata('message') ?? '' ?>",
-        title: "<?= session()->getFlashdata('title') ?? '' ?>"
+        message: "<?= session()->getFlashdata('message') ?? '' ?>"
     };
 
-    function showToastr(status = 'error', message = 'Your work has been saved', title = 'No title') {
-        toastr[status](message, title);
-        toastr.options = {
-            "closeButton": true,
-            "debug": true,
-            "newestOnTop": false,
-            "progressBar": true,
-            "positionClass": "toast-top-center",
-            "preventDuplicates": false,
-            "showDuration": "300",
-            "hideDuration": "100000",
-            "timeOut": "500000",
-            "extendedTimeOut": "100000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
+    function showSessionToast(status = 'error', message = 'Your work has been saved') {
+        Toast.fire({
+            icon: status,
+            title: message
+        });
     }
 
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function() {
         if (toastData.status) {
-            showToastr(toastData.status, toastData.message, toastData.title);
+            showSessionToast(toastData.status, toastData.message);
         }
     });
 
     function notifyToast() {
         if (toastData.status) {
-            showToastr(toastData.status, toastData.message, toastData.title);
+            showSessionToast(toastData.status, toastData.message);
         }
     }
 </script>
