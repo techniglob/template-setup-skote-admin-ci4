@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-class FileController extends BaseController
+class CommonController extends BaseController
 {
     public function getFile($filename)
     {
@@ -21,6 +21,14 @@ class FileController extends BaseController
         }
 
         return null;
+        
+    }
+    public function sessionFlash()
+    {
+        return $this->response->setJSON([
+            'status' => session()->getFlashdata('status'),
+            'message' => session()->getFlashdata('message'),
+        ]);
         
     }
 }

@@ -5,6 +5,12 @@ use \Config\Database;
 
 function setFlash($alert = array())
 {
+    /* if(session()->has('status')){
+        session()->remove('status');
+    }
+    if(session()->has('message')){
+        session()->remove('message');
+    } */
     if (array_key_exists('status', $alert)) {
         session()->setFlashdata('status', $alert['status']);
     } else {
