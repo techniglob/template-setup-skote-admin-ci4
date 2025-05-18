@@ -583,7 +583,6 @@ function getDateFormat()
 
 function getBackUser()
 {
-    $request = \Config\Services::request();
     $payload = null;
     if (!empty(getUserSession())) {
         $payload = getUserSession();
@@ -593,10 +592,9 @@ function getBackUser()
             $publicPath = FCPATH ;
             $fullpath = $path . $payload->profile_pic;
             if (is_file($fullpath)) {
-                $profile_pic = base_url('get-file/' . $payload->profile_pic);
+                $profile_pic = base_url('file?str=' . $payload->profile_pic);
                 $payload->user_profile_pic = $profile_pic;
             } else {
-                // $payload->user_profile_pic = base_url('avatar/' . $payload->full_name);
                 $payload->user_profile_pic = uiAvatars($payload->full_name);
             }
         }

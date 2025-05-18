@@ -10,6 +10,7 @@ use App\Controllers\DashboardController;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/get-file/(:any)', [CommonController::class, 'getFile']);
+$routes->get('/file', [CommonController::class, 'file']);
 $routes->get('/session-flash', [CommonController::class, 'sessionFlash']);
 $routes->group('portal', static function ($routes) {
 
