@@ -682,3 +682,33 @@ function portalUrl(?string $route = null, ?string $scheme = null)
 
         return $breadcrumbs->render();
     }
+
+    /**
+     * Common method to generate page title
+     * @param string|null $customTitle Custom title for the page
+     * @param bool $autoGenerate Whether to auto-generate title from URL segments
+     * @return string Formatted page title
+     */
+    function generatePageTitle(?string $customTitle = null, bool $autoGenerate = true): string
+    {
+        $baseTitle = 'Admin Panel';
+        $pageTitle = '';
+
+        if ($customTitle) {
+            // Use custom title if provided
+            $pageTitle = $customTitle;
+        } elseif ($autoGenerate) {
+            // Auto-generate title from URL segments
+            $uri = service('uri');
+            $segments = array_slice($uri->getSegments(), 1); // Skip 'portal'
+            if (empty($segments)) {
+                $pageTitle = 'Login '; // Default for /portal (post-login)
+            } else {
+                // Use last segment for title
+                $lastSegment = end($segments);
+                $pageTitle = ucwords(str_replace('-', ' ', $lastSegment));
+            }
+        }
+
+        return $pageTitle ? "$pageTitle | $baseTitle" : $baseTitle;
+    }
