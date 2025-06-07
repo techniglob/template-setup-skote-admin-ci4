@@ -14,6 +14,17 @@
                     <span >Dashboard</span>
                 </a>
             </li>
+            <!-- Master dropdown starts -->
+            <li>
+                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-cog"></i>
+                    <span>Master</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="false">
+                    <li><a href="<?= base_url('portal/categories') ?>">Categories</a></li>
+                </ul>
+            </li>
+            <!-- Master dropdown ends -->
             <li>
                 <a href="<?=base_url('portal/logout')?>" class="waves-effect">
                 <i class="bx bx-power-off"></i>
