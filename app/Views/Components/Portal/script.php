@@ -7,7 +7,7 @@
 
 <!-- apexcharts -->
 <script src="<?= base_url('') ?>back/js/apexcharts.min.js"></script>
-<script src="<?= base_url('') ?>back/js/toastr.min.js"></script>
+<script src="<?= base_url('') ?>back/js/sweetalert2.js"></script>
 
 <!-- App js -->
 <script src="<?= base_url('') ?>back/js/app.js"></script>
@@ -18,53 +18,48 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        <?php if (session()->has('status')) { ?>
-            toastr["<?= strtolower(session()->getFlashdata('status') ?? 'error') ?>"]("<?= session()->getFlashdata('message') ?? 'Your work has been saved' ?>",
-                "<?= session()->getFlashdata('title') ?? 'No title' ?>")
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        width: 'auto',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
 
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": 300,
-                "hideDuration": 1000,
-                "timeOut": 5000,
-                "extendedTimeOut": 1000,
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-        <?php } ?>
+    function showToast(icon, title) {
+        Toast.fire({
+            icon: icon,
+            title: title
+        });
+    }
+
+    // Pass PHP session data to JavaScript variables
+    const toastData = {
+        status: "<?= strtolower(session()->getFlashdata('status') ?? '') ?>",
+        message: "<?= session()->getFlashdata('message') ?? '' ?>"
+    };
+
+    function showSessionToast(status = 'error', message = 'Your work has been saved') {
+        Toast.fire({
+            icon: status,
+            title: message
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (toastData.status) {
+            showSessionToast(toastData.status, toastData.message);
+        }
     });
 
     function notifyToast() {
-        <?php if (session()->has('status')) { ?>
-            toastr["<?= strtolower(session()->getFlashdata('status') ?? 'error') ?>"]("<?= session()->getFlashdata('message') ?? 'Your work has been saved' ?>",
-                "<?= session()->getFlashdata('title') ?? 'No title' ?>")
-
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": 300,
-                "hideDuration": 1000,
-                "timeOut": 5000,
-                "extendedTimeOut": 1000,
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-        <?php } ?>
+        if (toastData.status) {
+            showSessionToast(toastData.status, toastData.message);
+        }
     }
 </script>
