@@ -13,10 +13,16 @@ class MasterController extends BaseController
     {
         $this->masterModel = new MasterModel();
     }
-    public function services()
+    public function categories()
     {
-        $output = $this->masterModel->services();
+        $output = $this->masterModel->categories();
         return portalView('Common/index', (array)$output);
         
+    }
+
+    public function products()
+    {
+        $output = $this->masterModel->products();
+        return portalView('Common/index', (array)$output);
     }
 }

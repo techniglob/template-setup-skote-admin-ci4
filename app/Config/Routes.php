@@ -23,6 +23,10 @@ $routes->group('portal', static function ($routes) {
         $routes->match(['get', 'post'],'products/(:segment)', [ProductController::class, 'products']);
         $routes->match(['get', 'post'],'products/(:segment)/(:segment)', [ProductController::class, 'products']);
 
+        $routes->match(['get', 'post'],'categories/', [MasterController::class, 'categories']);
+        $routes->match(['get', 'post'],'categories/(:segment)', [MasterController::class, 'categories']);
+        $routes->match(['get', 'post'],'categories/(:segment)/(:segment)', [MasterController::class, 'categories']);
+
 
     });
 });
