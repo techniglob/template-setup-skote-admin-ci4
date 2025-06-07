@@ -26,6 +26,12 @@
             </li>
             <!-- Master dropdown ends -->
             <li>
+                <a href="<?=base_url('portal/products')?>" class="waves-effect">
+                <i class="bx bx-power-off"></i>
+                    <span >Products</span>
+                </a>
+            </li>
+            <li>
                 <a href="<?=base_url('portal/logout')?>" class="waves-effect">
                 <i class="bx bx-power-off"></i>
                     <span >Logout</span>

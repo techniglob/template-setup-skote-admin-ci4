@@ -1,6 +1,8 @@
 <?php
 
 use CodeIgniter\Router\RouteCollection;
+use App\Controllers\MasterController;
+use App\Controllers\ProductController;
 
 /**
  * @var RouteCollection $routes
@@ -16,6 +18,10 @@ $routes->group('portal', static function ($routes) {
         $routes->match(['get', 'post'], 'update-profile', 'AuthController::updateProfile');
         $routes->match(['get', 'post'], 'change-password', 'AuthController::changePassword');
         // $routes->match(['get','post'], 'change-password', 'BackPanelController::Slider');
+
+        $routes->match(['get', 'post'],'products/', [ProductController::class, 'products']);
+        $routes->match(['get', 'post'],'products/(:segment)', [ProductController::class, 'products']);
+        $routes->match(['get', 'post'],'products/(:segment)/(:segment)', [ProductController::class, 'products']);
 
 
     });
