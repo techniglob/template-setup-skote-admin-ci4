@@ -5,6 +5,8 @@ use App\Controllers\AuthController;
 use App\Controllers\ProfileController;
 use App\Controllers\CommonController;
 use App\Controllers\DashboardController;
+use App\Controllers\MasterController;
+use App\Controllers\ProductController;
 /**
  * @var RouteCollection $routes
  */
@@ -22,6 +24,10 @@ $routes->group('portal', static function ($routes) {
         $routes->get('logout', 'AuthController::logout');
         $routes->match(['get', 'post'], 'update-profile', [ProfileController::class, 'updateProfile']);
         $routes->match(['get', 'post'], 'change-password', [ProfileController::class, 'changePassword']);
+
+        $routes->match(['get', 'post'],'products/', [ProductController::class, 'products']);
+        $routes->match(['get', 'post'],'products/(:segment)', [ProductController::class, 'products']);
+        $routes->match(['get', 'post'],'products/(:segment)/(:segment)', [ProductController::class, 'products']);
 
 
     });
