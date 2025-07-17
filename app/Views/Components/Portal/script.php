@@ -39,10 +39,6 @@
     }
 
     // Pass PHP session data to JavaScript variables
-    const toastData = {
-        status: "<?= strtolower(session()->getFlashdata('status') ?? '') ?>",
-        message: "<?= session()->getFlashdata('message') ?? '' ?>"
-    };
 
     function showSessionToast(status = 'error', message = 'Your work has been saved') {
         Toast.fire({
@@ -52,14 +48,16 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        if (toastData.status) {
-            showSessionToast(toastData.status, toastData.message);
-        }
+        <?php if (session()->has('status')): ?>
+            showSessionToast(`<?= session()->getFlashdata('status') ?>`, `<?= session()->getFlashdata('message') ?>`);
+        <?php endif; ?>
     });
 
     function notifyToast() {
-        if (toastData.status) {
-            showSessionToast(toastData.status, toastData.message);
-        }
+        $.get(`<?=base_url('session-flash')?>`, function(flash) {
+            if (flash.status && flash.message) {
+                showSessionToast(flash.status, flash.message);
+            }
+        });
     }
 </script>

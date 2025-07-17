@@ -48,7 +48,7 @@
 
 
     <?=view('components/portal/script')?>
-    <?= $this->renderSection('customJs') ?>
+    <?= $this->renderSection('js') ?>
 </body>
 
 </html>

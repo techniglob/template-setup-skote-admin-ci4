@@ -9,12 +9,12 @@ class UsersSeeder extends Seeder
     public function run()
     {
         $data = [
-            'username' => 'admin',
+            'username' => 'superadmin',
             'role_id' => 1,
-            'email'    => 'admin@gmail.com',
+            'email'    => 'superadmin@example.com',
             'mobile'    => '1234567890',
-            'full_name'    => 'Admin',
-            'password'    => password_hash(123,  PASSWORD_DEFAULT),
+            'full_name'    => 'Super Admin',
+            'password'    => password_hash(123456,  PASSWORD_DEFAULT),
             'created_at'    => date('Y-m-d H:i:s'),
             'created_by'    => 1
         ];
