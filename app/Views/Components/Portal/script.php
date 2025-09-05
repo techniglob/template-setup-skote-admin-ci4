@@ -13,14 +13,14 @@
 <script src="<?= base_url('') ?>back/js/app.js"></script>
 
 <!-- Ajax Form -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script src="<?= base_url('') ?>common/js/jquery.form.min.js"></script>
 <!-- /////// -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="<?= base_url('') ?>common/js/jquery.validate.min.js"></script>
 
 <script>
     const Toast = Swal.mixin({
         toast: true,
-        position: 'top',
+        position: 'top-right',
         width: 'auto',
         showConfirmButton: false,
         timer: 3000,
@@ -30,16 +30,7 @@
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     });
-
-    function showToast(icon, title) {
-        Toast.fire({
-            icon: icon,
-            title: title
-        });
-    }
-
     // Pass PHP session data to JavaScript variables
-
     function showSessionToast(status = 'error', message = 'Your work has been saved') {
         Toast.fire({
             icon: status,
@@ -54,10 +45,25 @@
     });
 
     function notifyToast() {
-        $.get(`<?=base_url('session-flash')?>`, function(flash) {
+        $.get(`<?= base_url('session-flash') ?>`, function(flash) {
             if (flash.status && flash.message) {
                 showSessionToast(flash.status, flash.message);
             }
         });
+    }
+
+    function toggleButtonLoader(button, isLoading = true, loadingText = 'Loading...') {
+        var button = $(`#${button}`);
+        if (isLoading) {
+            button.data('original-text', button.html());
+            button.html(`<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${loadingText}`);
+            button.prop('disabled', true);
+        } else {
+            const originalText = button.data('original-text');
+            if (originalText) {
+                button.html(originalText);
+            }
+            button.prop('disabled', false);
+        }
     }
 </script>
