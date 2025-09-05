@@ -1,6 +1,9 @@
 <?= $this->extend('layouts/portal') ?>
 
 <?= $this->section('content') ?>
+<?php
+if(1==2){
+?>
 <div class="row">
     <div class="col-xl-12">
         <div class="row">
@@ -69,5 +72,7 @@
 
     </div>
 </div>
+
+<?php } ?>
 
 <?= $this->endSection() ?>
