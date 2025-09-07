@@ -3,6 +3,7 @@
 use CodeIgniter\HTTP\RequestInterface;
 use \Config\Database;
 use  App\Modules\Breadcrumbs\Breadcrumbs;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 function setFlash($alert = array())
 {
@@ -590,7 +591,7 @@ function getBackUser()
         $payload = $payload['user'];
         if (!is_null($payload)) {
             $path = WRITEPATH . 'uploads/';
-            $publicPath = FCPATH ;
+            $publicPath = FCPATH;
             $fullpath = $path . $payload->profile_pic;
             if (is_file($fullpath)) {
                 $profile_pic = base_url('file?str=' . $payload->profile_pic);
@@ -603,7 +604,8 @@ function getBackUser()
     return $payload;
 }
 
-function uiAvatars($full_name){
+function uiAvatars($full_name)
+{
     return UI_AVATARS . "?name=$full_name&background=random&color=0000";
 }
 
@@ -644,71 +646,230 @@ function portalUrl(?string $route = null, ?string $scheme = null)
 }
 
 
-    /**
-     * Common method to generate breadcrumbs
-     * @param array $customCrumbs Optional custom crumbs [ ['title' => 'Name', 'url' => '/path'], ... ]
-     * @param bool $autoGenerate Whether to auto-generate crumbs based on URL segments
-     * @return string Rendered breadcrumb HTML
-     */
-    function generateBreadcrumbs(array $customCrumbs = [], bool $autoGenerate = true): string
-    {
-        $breadcrumbs = new Breadcrumbs();
-        // Always add Home breadcrumb
-        // $breadcrumbs->add('Home', '/admin');
+/**
+ * Common method to generate breadcrumbs
+ * @param array $customCrumbs Optional custom crumbs [ ['title' => 'Name', 'url' => '/path'], ... ]
+ * @param bool $autoGenerate Whether to auto-generate crumbs based on URL segments
+ * @return string Rendered breadcrumb HTML
+ */
+function generateBreadcrumbs(array $customCrumbs = [], bool $autoGenerate = true): string
+{
+    $breadcrumbs = new Breadcrumbs();
+    // Always add Home breadcrumb
+    // $breadcrumbs->add('Home', '/admin');
 
-        if ($autoGenerate) {
-            // Auto-generate breadcrumbs based on URL segments
-            $uri = service('uri');
-            $segments = $uri->getSegments();
-            // getPrint($segments);
-            $path = '/';
+    if ($autoGenerate) {
+        // Auto-generate breadcrumbs based on URL segments
+        $uri = service('uri');
+        $segments = $uri->getSegments();
+        // getPrint($segments);
+        $path = '/';
 
-            foreach ($segments as $index => $segment) {
-                if ($segment === 'portal') {
-                    continue;
-                }
-                $path .= '/' . $segment;
-                $title = ucwords(str_replace('-', ' ', $segment));
-                $breadcrumbs->add($title, $path);
+        foreach ($segments as $index => $segment) {
+            if ($segment === 'portal') {
+                continue;
             }
+            $path .= '/' . $segment;
+            $title = ucwords(str_replace('-', ' ', $segment));
+            $breadcrumbs->add($title, $path);
         }
-
-        // Add custom breadcrumbs if provided
-        foreach ($customCrumbs as $crumb) {
-            if (isset($crumb['title'], $crumb['url'])) {
-                $breadcrumbs->add($crumb['title'], $crumb['url']);
-            }
-        }
-
-        return $breadcrumbs->render();
     }
 
-    /**
-     * Common method to generate page title
-     * @param string|null $customTitle Custom title for the page
-     * @param bool $autoGenerate Whether to auto-generate title from URL segments
-     * @return string Formatted page title
-     */
-    function generatePageTitle(?string $customTitle = null, bool $autoGenerate = true): string
-    {
-        $baseTitle = 'Admin Panel';
-        $pageTitle = '';
+    // Add custom breadcrumbs if provided
+    foreach ($customCrumbs as $crumb) {
+        if (isset($crumb['title'], $crumb['url'])) {
+            $breadcrumbs->add($crumb['title'], $crumb['url']);
+        }
+    }
 
-        if ($customTitle) {
-            // Use custom title if provided
-            $pageTitle = $customTitle;
-        } elseif ($autoGenerate) {
-            // Auto-generate title from URL segments
-            $uri = service('uri');
-            $segments = array_slice($uri->getSegments(), 1); // Skip 'portal'
-            if (empty($segments)) {
-                $pageTitle = 'Login '; // Default for /portal (post-login)
-            } else {
-                // Use last segment for title
-                $lastSegment = end($segments);
-                $pageTitle = ucwords(str_replace('-', ' ', $lastSegment));
+    return $breadcrumbs->render();
+}
+
+/**
+ * Common method to generate page title
+ * @param string|null $customTitle Custom title for the page
+ * @param bool $autoGenerate Whether to auto-generate title from URL segments
+ * @return string Formatted page title
+ */
+function generatePageTitle(?string $customTitle = null, bool $autoGenerate = true): string
+{
+    $baseTitle = 'Admin Panel';
+    $pageTitle = '';
+
+    if ($customTitle) {
+        // Use custom title if provided
+        $pageTitle = $customTitle;
+    } elseif ($autoGenerate) {
+        // Auto-generate title from URL segments
+        $uri = service('uri');
+        $segments = array_slice($uri->getSegments(), 1); // Skip 'portal'
+        if (empty($segments)) {
+            $pageTitle = 'Login '; // Default for /portal (post-login)
+        } else {
+            // Use last segment for title
+            $lastSegment = end($segments);
+            $pageTitle = ucwords(str_replace('-', ' ', $lastSegment));
+        }
+    }
+
+    return $pageTitle ? "$pageTitle | $baseTitle" : $baseTitle;
+}
+
+if (! function_exists('show_404')) {
+    /**
+     * Show a 404 Page Not Found error.
+     *
+     * This helper function is a shortcut for throwing CodeIgniter's
+     * PageNotFoundException. It will automatically display the configured
+     * 404 error page or a custom one if defined in Routes.php.
+     *
+     * Example:
+     *     if (! $user) {
+     *         show_404();
+     *     }
+     *
+     * @param string $message Optional custom message for the 404 error.
+     *
+     * @throws PageNotFoundException
+     * @return void
+     */
+    function show_404(string $message = 'Page Not Found'): void
+    {
+        throw PageNotFoundException::forPageNotFound($message);
+    }
+}
+
+
+if (! function_exists('fetchRecords')) {
+    /**
+     * Universal SELECT query handler
+     *
+     * @param string $table   Main table (with alias if needed)
+     * @param array  $options Query options (all keys optional)
+     * 
+     * Supported keys:
+     *  - select      : array|string (columns to select)
+     *  - distinct    : bool
+     *  - joins       : array [['table'=>'roles r','condition'=>'u.role_id=r.id','type'=>'left']]
+     *  - where       : array
+     *  - orWhere     : array
+     *  - whereIn     : array ['id' => [1,2,3]]
+     *  - whereNotIn  : array
+     *  - like        : array ['name'=>'John']
+     *  - orLike      : array
+     *  - notLike     : array
+     *  - groupBy     : string|array
+     *  - having      : array|string
+     *  - orderBy     : array ['id'=>'DESC']
+     *  - limit       : int
+     *  - offset      : int
+     *  - returnType  : string (array|object|row|rowArray) default: array
+     *
+     * @return array|object|null
+     */
+    function fetchRecords(string $table, array $options = [])
+    {
+        $db = Database::connect();
+        $builder = $db->table($table);
+
+        // DISTINCT
+        if (!empty($options['distinct'])) {
+            $builder->distinct();
+        }
+
+        // SELECT
+        $builder->select(
+            !empty($options['select'])
+                ? (is_array($options['select']) ? implode(',', $options['select']) : $options['select'])
+                : '*'
+        );
+
+        // JOINS
+        if (!empty($options['joins'])) {
+            foreach ($options['joins'] as $join) {
+                $builder->join(
+                    $join['table'],
+                    $join['condition'],
+                    $join['type'] ?? '' // left, right, inner
+                );
             }
         }
 
-        return $pageTitle ? "$pageTitle | $baseTitle" : $baseTitle;
+        // WHERE
+        if (!empty($options['where'])) {
+            $builder->where($options['where']);
+        }
+        if (!empty($options['orWhere'])) {
+            foreach ($options['orWhere'] as $field => $val) {
+                $builder->orWhere($field, $val);
+            }
+        }
+
+        // WHERE IN / NOT IN
+        if (!empty($options['whereIn'])) {
+            foreach ($options['whereIn'] as $field => $values) {
+                $builder->whereIn($field, $values);
+            }
+        }
+        if (!empty($options['whereNotIn'])) {
+            foreach ($options['whereNotIn'] as $field => $values) {
+                $builder->whereNotIn($field, $values);
+            }
+        }
+
+        // LIKE / NOT LIKE
+        if (!empty($options['like'])) {
+            foreach ($options['like'] as $field => $value) {
+                $builder->like($field, $value);
+            }
+        }
+        if (!empty($options['orLike'])) {
+            foreach ($options['orLike'] as $field => $value) {
+                $builder->orLike($field, $value);
+            }
+        }
+        if (!empty($options['notLike'])) {
+            foreach ($options['notLike'] as $field => $value) {
+                $builder->notLike($field, $value);
+            }
+        }
+
+        // GROUP BY
+        if (!empty($options['groupBy'])) {
+            $builder->groupBy($options['groupBy']);
+        }
+
+        // HAVING
+        if (!empty($options['having'])) {
+            $builder->having($options['having']);
+        }
+
+        // ORDER BY
+        if (!empty($options['orderBy'])) {
+            foreach ($options['orderBy'] as $field => $direction) {
+                $builder->orderBy($field, $direction);
+            }
+        }
+
+        // LIMIT + OFFSET
+        if (!empty($options['limit'])) {
+            $builder->limit($options['limit'], $options['offset'] ?? 0);
+        }
+
+        // RUN QUERY
+        $query = $builder->get();
+
+        // RETURN TYPE
+        $returnType = $options['returnType'] ?? 'array'; // default: array
+        switch ($returnType) {
+            case 'object':
+                return $query->getResult();       // list of objects
+            case 'row':
+                return $query->getRow();          // single object
+            case 'rowArray':
+                return $query->getRowArray();     // single row as array
+            default:
+                return $query->getResultArray();  // list of arrays
+        }
     }
+}

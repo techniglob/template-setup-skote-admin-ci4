@@ -32,6 +32,14 @@ class Users extends Migration
                 'constraint' => '10',
                 'null'       => true
             ],
+            'first_name' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100'
+            ],
+            'last_name' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100'
+            ],
             'full_name' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100'
