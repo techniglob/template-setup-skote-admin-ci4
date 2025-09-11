@@ -617,102 +617,114 @@ function dateDiff($date)
     return  $dDiff->format('%r%a')  + 1;
 }
 
-/**
- * Back Panel Access Set View 
- *
- * @param string $url
- * @return string
- */
-function portalView(string $name, array $data = [], array $options = [])
-{
-    return view(
-        'portal/' . $name,
-        $data,
-        $options
-    );
-}
-/**
- * Back Panel Access Set Base Url 
- *
- * @param string $route
- * @return string $scheme
- */
-function portalUrl(?string $route = null, ?string $scheme = null)
-{
-    return base_url(
-        'portal/' . $route,
-        $scheme
-    );
+if (!function_exists('portalView')) {
+    /**
+     * Back Panel Access Set View
+     *
+     * @param string $name
+     * @param array  $data
+     * @param array  $options
+     * @return string
+     */
+    function portalView(string $name, array $data = [], array $options = []): string
+    {
+        return view(
+            'portal/' . $name,
+            $data,
+            $options
+        );
+    }
 }
 
+if (!function_exists('portalUrl')) {
+    /**
+     * Back Panel Access Set Base Url 
+     *
+     * @param string|null $route
+     * @param string|null $scheme
+     * @return string
+     */
+    function portalUrl(?string $route = null, ?string $scheme = null): string
+    {
+        return base_url(
+            'portal/' . ($route ?? ''),
+            $scheme
+        );
+    }
+}
 
-/**
- * Common method to generate breadcrumbs
- * @param array $customCrumbs Optional custom crumbs [ ['title' => 'Name', 'url' => '/path'], ... ]
- * @param bool $autoGenerate Whether to auto-generate crumbs based on URL segments
- * @return string Rendered breadcrumb HTML
- */
-function generateBreadcrumbs(array $customCrumbs = [], bool $autoGenerate = true): string
-{
-    $breadcrumbs = new Breadcrumbs();
-    // Always add Home breadcrumb
-    // $breadcrumbs->add('Home', '/admin');
 
-    if ($autoGenerate) {
-        // Auto-generate breadcrumbs based on URL segments
-        $uri = service('uri');
-        $segments = $uri->getSegments();
-        // getPrint($segments);
-        $path = '/';
 
-        foreach ($segments as $index => $segment) {
-            if ($segment === 'portal') {
-                continue;
+if (! function_exists('generateBreadcrumbs')) {
+    /**
+     * Common method to generate breadcrumbs
+     * @param array $customCrumbs Optional custom crumbs [ ['title' => 'Name', 'url' => '/path'], ... ]
+     * @param bool $autoGenerate Whether to auto-generate crumbs based on URL segments
+     * @return string Rendered breadcrumb HTML
+     */
+    function generateBreadcrumbs(array $customCrumbs = [], bool $autoGenerate = true): string
+    {
+        $breadcrumbs = new Breadcrumbs();
+        // Always add Home breadcrumb
+        // $breadcrumbs->add('Home', '/admin');
+
+        if ($autoGenerate) {
+            // Auto-generate breadcrumbs based on URL segments
+            $uri = service('uri');
+            $segments = $uri->getSegments();
+            // getPrint($segments);
+            $path = '/';
+
+            foreach ($segments as $index => $segment) {
+                if ($segment === 'portal') {
+                    continue;
+                }
+                $path .= '/' . $segment;
+                $title = ucwords(str_replace('-', ' ', $segment));
+                $breadcrumbs->add($title, $path);
             }
-            $path .= '/' . $segment;
-            $title = ucwords(str_replace('-', ' ', $segment));
-            $breadcrumbs->add($title, $path);
         }
-    }
 
-    // Add custom breadcrumbs if provided
-    foreach ($customCrumbs as $crumb) {
-        if (isset($crumb['title'], $crumb['url'])) {
-            $breadcrumbs->add($crumb['title'], $crumb['url']);
+        // Add custom breadcrumbs if provided
+        foreach ($customCrumbs as $crumb) {
+            if (isset($crumb['title'], $crumb['url'])) {
+                $breadcrumbs->add($crumb['title'], $crumb['url']);
+            }
         }
-    }
 
-    return $breadcrumbs->render();
+        return $breadcrumbs->render();
+    }
 }
+if (! function_exists('generatePageTitle')) {
+    /**
+     * Common method to generate page title
+     * @param string|null $customTitle Custom title for the page
+     * @param bool $autoGenerate Whether to auto-generate title from URL segments
+     * @return string Formatted page title
+     */
+    function generatePageTitle(?string $customTitle = null, bool $autoGenerate = true): string
+    {
+        $baseTitle = 'Admin Panel';
+        $pageTitle = '';
 
-/**
- * Common method to generate page title
- * @param string|null $customTitle Custom title for the page
- * @param bool $autoGenerate Whether to auto-generate title from URL segments
- * @return string Formatted page title
- */
-function generatePageTitle(?string $customTitle = null, bool $autoGenerate = true): string
-{
-    $baseTitle = 'Admin Panel';
-    $pageTitle = '';
-
-    if ($customTitle) {
-        // Use custom title if provided
-        $pageTitle = $customTitle;
-    } elseif ($autoGenerate) {
-        // Auto-generate title from URL segments
-        $uri = service('uri');
-        $segments = array_slice($uri->getSegments(), 1); // Skip 'portal'
-        if (empty($segments)) {
-            $pageTitle = 'Login '; // Default for /portal (post-login)
-        } else {
-            // Use last segment for title
-            $lastSegment = end($segments);
-            $pageTitle = ucwords(str_replace('-', ' ', $lastSegment));
+        if ($customTitle) {
+            // Use custom title if provided
+            $pageTitle = $customTitle;
+        } elseif ($autoGenerate) {
+            // Auto-generate title from URL segments
+            $uri = service('uri');
+            $segments = array_slice($uri->getSegments(), 1); // Skip 'portal'
+            if (empty($segments)) {
+                $pageTitle = 'Login '; // Default for /portal (post-login)
+            } else {
+                // Use last segment for title
+                $lastSegment = end($segments);
+                $pageTitle = ucwords(str_replace('-', ' ', $lastSegment));
+            }
         }
-    }
 
-    return $pageTitle ? "$pageTitle | $baseTitle" : $baseTitle;
+        return $pageTitle ? "::: $pageTitle || $baseTitle :::" : $baseTitle;
+    }
 }
 
 if (! function_exists('show404')) {
