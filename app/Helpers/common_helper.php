@@ -715,7 +715,7 @@ function generatePageTitle(?string $customTitle = null, bool $autoGenerate = tru
     return $pageTitle ? "$pageTitle | $baseTitle" : $baseTitle;
 }
 
-if (! function_exists('show_404')) {
+if (! function_exists('show404')) {
     /**
      * Show a 404 Page Not Found error.
      *
@@ -725,7 +725,7 @@ if (! function_exists('show_404')) {
      *
      * Example:
      *     if (! $user) {
-     *         show_404();
+     *         show404();
      *     }
      *
      * @param string $message Optional custom message for the 404 error.
@@ -733,7 +733,7 @@ if (! function_exists('show_404')) {
      * @throws PageNotFoundException
      * @return void
      */
-    function show_404(string $message = 'Page Not Found'): void
+    function show404(string $message = 'Page Not Found'): void
     {
         throw PageNotFoundException::forPageNotFound($message);
     }

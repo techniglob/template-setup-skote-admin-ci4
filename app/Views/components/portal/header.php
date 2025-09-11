@@ -3,7 +3,7 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="<?=portalUrl()?>" class="logo logo-light">
+                <a href="<?=portalUrl('/dashboard')?>" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="<?=base_url('logofull.png')?>" alt="" class="rounded-circle" height="40">
                     </span>

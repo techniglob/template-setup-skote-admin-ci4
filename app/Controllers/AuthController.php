@@ -15,7 +15,7 @@ class AuthController extends BaseController
                 'status'=>'error',
                 'message'=>'First logut then go to login page',
             ]);
-            return redirect()->back();
+            return redirect()->to(portalUrl('dashboard'));
         }
         if($this->request->getVar()){
             $session = session();
