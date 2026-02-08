@@ -3,6 +3,7 @@
 use CodeIgniter\HTTP\RequestInterface;
 use \Config\Database;
 use  App\Modules\Breadcrumbs\Breadcrumbs;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 function setFlash($alert = array())
 {
@@ -590,7 +591,7 @@ function getBackUser()
         $payload = $payload['user'];
         if (!is_null($payload)) {
             $path = WRITEPATH . 'uploads/';
-            $publicPath = FCPATH ;
+            $publicPath = FCPATH;
             $fullpath = $path . $payload->profile_pic;
             if (is_file($fullpath)) {
                 $profile_pic = base_url('file?str=' . $payload->profile_pic);
@@ -603,7 +604,8 @@ function getBackUser()
     return $payload;
 }
 
-function uiAvatars($full_name){
+function uiAvatars($full_name)
+{
     return UI_AVATARS . "?name=$full_name&background=random&color=0000";
 }
 
@@ -615,35 +617,45 @@ function dateDiff($date)
     return  $dDiff->format('%r%a')  + 1;
 }
 
-/**
- * Back Panel Access Set View 
- *
- * @param string $url
- * @return string
- */
-function portalView(string $name, array $data = [], array $options = [])
-{
-    return view(
-        'portal/' . $name,
-        $data,
-        $options
-    );
+if (!function_exists('portalView')) {
+    /**
+     * Back Panel Access Set View
+     *
+     * @param string $name
+     * @param array  $data
+     * @param array  $options
+     * @return string
+     */
+    function portalView(string $name, array $data = [], array $options = []): string
+    {
+        return view(
+            'portal/' . $name,
+            $data,
+            $options
+        );
+    }
 }
-/**
- * Back Panel Access Set Base Url 
- *
- * @param string $route
- * @return string $scheme
- */
-function portalUrl(?string $route = null, ?string $scheme = null)
-{
-    return base_url(
-        'portal/' . $route,
-        $scheme
-    );
+
+if (!function_exists('portalUrl')) {
+    /**
+     * Back Panel Access Set Base Url 
+     *
+     * @param string|null $route
+     * @param string|null $scheme
+     * @return string
+     */
+    function portalUrl(?string $route = null, ?string $scheme = null): string
+    {
+        return base_url(
+            'portal/' . ($route ?? ''),
+            $scheme
+        );
+    }
 }
 
 
+
+if (! function_exists('generateBreadcrumbs')) {
     /**
      * Common method to generate breadcrumbs
      * @param array $customCrumbs Optional custom crumbs [ ['title' => 'Name', 'url' => '/path'], ... ]
@@ -682,7 +694,8 @@ function portalUrl(?string $route = null, ?string $scheme = null)
 
         return $breadcrumbs->render();
     }
-
+}
+if (! function_exists('generatePageTitle')) {
     /**
      * Common method to generate page title
      * @param string|null $customTitle Custom title for the page
@@ -710,5 +723,165 @@ function portalUrl(?string $route = null, ?string $scheme = null)
             }
         }
 
-        return $pageTitle ? "$pageTitle | $baseTitle" : $baseTitle;
+        return $pageTitle ? "::: $pageTitle || $baseTitle :::" : $baseTitle;
     }
+}
+
+if (! function_exists('show404')) {
+    /**
+     * Show a 404 Page Not Found error.
+     *
+     * This helper function is a shortcut for throwing CodeIgniter's
+     * PageNotFoundException. It will automatically display the configured
+     * 404 error page or a custom one if defined in Routes.php.
+     *
+     * Example:
+     *     if (! $user) {
+     *         show404();
+     *     }
+     *
+     * @param string $message Optional custom message for the 404 error.
+     *
+     * @throws PageNotFoundException
+     * @return void
+     */
+    function show404(string $message = 'Page Not Found'): void
+    {
+        throw PageNotFoundException::forPageNotFound($message);
+    }
+}
+
+
+if (! function_exists('fetchRecords')) {
+    /**
+     * Universal SELECT query handler
+     *
+     * @param string $table   Main table (with alias if needed)
+     * @param array  $options Query options (all keys optional)
+     * 
+     * Supported keys:
+     *  - select      : array|string (columns to select)
+     *  - distinct    : bool
+     *  - joins       : array [['table'=>'roles r','condition'=>'u.role_id=r.id','type'=>'left']]
+     *  - where       : array
+     *  - orWhere     : array
+     *  - whereIn     : array ['id' => [1,2,3]]
+     *  - whereNotIn  : array
+     *  - like        : array ['name'=>'John']
+     *  - orLike      : array
+     *  - notLike     : array
+     *  - groupBy     : string|array
+     *  - having      : array|string
+     *  - orderBy     : array ['id'=>'DESC']
+     *  - limit       : int
+     *  - offset      : int
+     *  - returnType  : string (array|object|row|rowArray) default: array
+     *
+     * @return array|object|null
+     */
+    function fetchRecords(string $table, array $options = [])
+    {
+        $db = Database::connect();
+        $builder = $db->table($table);
+
+        // DISTINCT
+        if (!empty($options['distinct'])) {
+            $builder->distinct();
+        }
+
+        // SELECT
+        $builder->select(
+            !empty($options['select'])
+                ? (is_array($options['select']) ? implode(',', $options['select']) : $options['select'])
+                : '*'
+        );
+
+        // JOINS
+        if (!empty($options['joins'])) {
+            foreach ($options['joins'] as $join) {
+                $builder->join(
+                    $join['table'],
+                    $join['condition'],
+                    $join['type'] ?? '' // left, right, inner
+                );
+            }
+        }
+
+        // WHERE
+        if (!empty($options['where'])) {
+            $builder->where($options['where']);
+        }
+        if (!empty($options['orWhere'])) {
+            foreach ($options['orWhere'] as $field => $val) {
+                $builder->orWhere($field, $val);
+            }
+        }
+
+        // WHERE IN / NOT IN
+        if (!empty($options['whereIn'])) {
+            foreach ($options['whereIn'] as $field => $values) {
+                $builder->whereIn($field, $values);
+            }
+        }
+        if (!empty($options['whereNotIn'])) {
+            foreach ($options['whereNotIn'] as $field => $values) {
+                $builder->whereNotIn($field, $values);
+            }
+        }
+
+        // LIKE / NOT LIKE
+        if (!empty($options['like'])) {
+            foreach ($options['like'] as $field => $value) {
+                $builder->like($field, $value);
+            }
+        }
+        if (!empty($options['orLike'])) {
+            foreach ($options['orLike'] as $field => $value) {
+                $builder->orLike($field, $value);
+            }
+        }
+        if (!empty($options['notLike'])) {
+            foreach ($options['notLike'] as $field => $value) {
+                $builder->notLike($field, $value);
+            }
+        }
+
+        // GROUP BY
+        if (!empty($options['groupBy'])) {
+            $builder->groupBy($options['groupBy']);
+        }
+
+        // HAVING
+        if (!empty($options['having'])) {
+            $builder->having($options['having']);
+        }
+
+        // ORDER BY
+        if (!empty($options['orderBy'])) {
+            foreach ($options['orderBy'] as $field => $direction) {
+                $builder->orderBy($field, $direction);
+            }
+        }
+
+        // LIMIT + OFFSET
+        if (!empty($options['limit'])) {
+            $builder->limit($options['limit'], $options['offset'] ?? 0);
+        }
+
+        // RUN QUERY
+        $query = $builder->get();
+
+        // RETURN TYPE
+        $returnType = $options['returnType'] ?? 'array'; // default: array
+        switch ($returnType) {
+            case 'object':
+                return $query->getResult();       // list of objects
+            case 'row':
+                return $query->getRow();          // single object
+            case 'rowArray':
+                return $query->getRowArray();     // single row as array
+            default:
+                return $query->getResultArray();  // list of arrays
+        }
+    }
+}

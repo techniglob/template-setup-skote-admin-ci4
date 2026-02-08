@@ -4,7 +4,7 @@
 <head>
 
     <?=view('components/portal/head')?>
-    <?= $this->renderSection('customCss') ?>
+    <?= $this->renderSection('css') ?>
 
 </head>
 

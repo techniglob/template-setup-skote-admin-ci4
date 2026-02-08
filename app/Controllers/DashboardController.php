@@ -9,6 +9,7 @@ class DashboardController extends BaseController
 {
     public function index()
     {
+        // show404('dhisudyu');
         // echo base_url(); die;
         return portalView('dashboard/index');
     }
